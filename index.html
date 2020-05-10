@@ -6,10 +6,32 @@
     <script src="main.js"></script>
   </head>
   <body>
-    <h1>Hello World!</h1>
-    <hr/>
-    <div id="display-element"></div>
-    <button onclick="displayDate()">Click Me</button>
-    <hr/>
+    <div class="section hero">
+      <div class="container">
+        <div class="row">
+          <div class="u-max-full-width ">
+            <h4 class="hero-heading">Pig Latin Translator</h4>
+          </div>
+        </div>
+      </div>
+
+    <div class="section values">
+      <div class="container">
+        <form>
+          <div class="row">
+            <div class="six columns">
+              <label for="exampleMessage">Type a phrase you need translated into Pig Latin</label>
+              <textarea rows="6" cols="50" class="u-full-width pigInput" id="pigInput" type="text" placeholder="This text will be converted into Pig Latin" name="pigInput"></textarea>
+
+              <a class="button button-primary" href="javascript: submitPigPhrase()">Translate</a>
+            </div>
+            <div class="six columns" id="translation">
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script type="text/javascript" src="pigLatin.js"></script>
   </body>
 </html>

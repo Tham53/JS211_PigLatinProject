@@ -1,71 +1,88 @@
-'use strict';
+// module.exports = pigPhrase;
+// module.exports = unpigPhrase;
 
-// brings in the assert module for unit testing
-const assert = require('assert');
-// brings in the readline module to access the command line
-const readline = require('readline');
-// use the readline module to print out to the command line
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
+function submitPigPhrase() {
 
+  var input = document.getElementById('pigInput').value;
+  var translation = document.getElementById('translation');
 
-const pigLatin = (word) => {
+  var header = document.createElement('h3');
+  var text = document.createElement('p');
 
-  // Your code here
+  //clear previous translation from the DOM
+  translation.removeChild(translation.firstChild)
 
+  //Append newly translated phrase to the DOM
+  text.innerHTML = pigPhrase(input);
+  translation.appendChild(text);
 }
 
-// the first function called in the program to get an input from the user
-// to run the function use the command: node main.js
-// to close it ctrl + C
-const getPrompt = () => {
-  rl.question('word ', (answer) => {
-    console.log( pigLatin(answer) );
-    getPrompt();
-  });
+/**
+ * Takes an sentence and converts each word into pig latin
+ * @param  [String] phrase that will be converted into pig latin.
+ * @return [String] Phrase that has been translated into pig latin
+ */
+function pigPhrase (phrase) {
+  var sentence = phrase.split(' ');
+  var piggedPhrase = [];
+
+  for (var i = 0; i <= sentence.length - 1; i++) {
+    piggedPhrase.push(pigWord(sentence[i]));
+  };
+  return piggedPhrase.join(' ');
 }
 
-// Unit Tests
-// You use them run the command: npm test main.js
-// to close them ctrl + C
-if (typeof describe === 'function') {
+/**
+ * converts a pig latin phrase back into it's native language
+ * @param  [String] Pig Latin phrase that will be converted back into the native language.
+ * @return [String] Phrase that has been translated into the native language.
+ */
+function unpigPhrase (phrase) {
+  var sentence = phrase.split(' ');
+  var unpiggedPhrase = [];
 
-  describe('#pigLatin()', () => {
-    it('should translate a simple word', () => {
-      assert.equal(pigLatin('car'), 'arcay');
-      assert.equal(pigLatin('dog'), 'ogday');
-    });
-    it('should translate a complex word', () => {
-      assert.equal(pigLatin('create'), 'eatecray');
-      assert.equal(pigLatin('valley'), 'alleyvay');
-    });
-    it('should attach "yay" if word begins with vowel', () => {
-      assert.equal(pigLatin('egg'), 'eggyay');
-      assert.equal(pigLatin('emission'), 'emissionyay');
-    });
-    it('should lowercase and trim word before translation', () => {
-      assert.equal(pigLatin('HeLlO '), 'ellohay');
-      assert.equal(pigLatin(' RoCkEt'), 'ocketray');
-    });
-  });
-} else {
-
-  getPrompt();
-
+  for (var i = 0; i <= sentence.length - 1; i++) {
+    unpiggedPhrase.push(unpigWord(sentence[i]));
+  };
+  return unpiggedPhrase.join(' ');
 }
 
+/**
+ * Takes a word and converts it into pig latin
+ * @param  [string] This is the word that will be converted
+ * @return [string] Word that hass been converted into pig latin
+ */
+function pigWord (word) {
+  return word.slice(findFirstVowel(word), word.length) + '-' + word.slice( -word.length, findFirstVowel(word)) + 'ay';
+}
 
+/**
+ * Takes a word in pig latin and converts it into a human readable word
+ * @param  [String] piggedWord that will be translated
+ * @return [String] Translated word
+ */
+function unpigWord ( piggedWord ) {
+  return piggedWord.slice( piggedWord.search('-') + 1, -2 ) + piggedWord.slice( 0, piggedWord.search('-'));
+}
 
+/**
+ * Finds the first vowel in a word
+ * @param  [sting] word
+ * @return [int] position of the first vowel in the word
+ */
 
+function findFirstVowel (word) {
+  var vowels = ['a', 'e', 'i', 'o', 'u'];
 
+  for (var i = 0; i <= word.length - 1; i++) {
 
-// **********
-//   HINTS
-// **********
+    if (vowels.indexOf(word[i]) !== -1 ) {
+      return i;
+    }
+  }
+  return word.length;
+}
 
-// break your code into pieces and focus on one piece at a time...
-// 1. if word begins with a vowel send to one function: adds "yay"
-// 2. if word begins in with a consonant send to another function: splices off beginning, returns word with new ending.
-// 3. if multiple words, create array of words, loop over them, sending them to different functions and creating a new array with the new words.
+// console.log(pigPhrase('I built a pig latin translator program'));
+//
+// console.log(unpigPhrase( 'is-Thay ig-Pay atin-Lay ase-phray ill-way e-bay anslated-tray ack-bay into-ay e-thay ative-nay anguage-lay -asay -aay ing.-stray' ));
